@@ -88,8 +88,8 @@ function Map(str){
             return { N: _this.N, M: _this.M, rows: _this.row};
         },
         addCar : function(car){
-            car.setAttribut("table", _this.table);
-            car.setAttribut("mapData", this.getData());
+            car.setAttribute("table", _this.table);
+            car.setAttribute("mapData", this.getData());
             _this.cars.push(car);
             init();
         }
