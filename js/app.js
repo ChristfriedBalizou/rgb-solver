@@ -24,7 +24,7 @@
             map.addCar(car);
             var n  = 0;
             var id = setInterval(function(){
-                if(!car.move()){
+                if(!car.helper.move()){
                     console.log('cant move');
                     clearInterval(id);
                 }
