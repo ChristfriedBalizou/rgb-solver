@@ -33,6 +33,10 @@ function CarHelper(car) {
         random: function(min, max){
             return Math.floor(Math.random() * (max - min)) + min;
         },
+        alreadyPassed: function(x, y) {
+            //FIXME : check for all the cars
+            return car.way().indexOf(x + "," + y) != -1;  
+        },
         direction: function(){
             var where = []
                 ,pos = car.position()
