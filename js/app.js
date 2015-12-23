@@ -45,4 +45,18 @@
     car.move(map, 4, 10);
     car.move(map, 5, 10);*/
 
+/*
+   *r*
+   *O*
+  *******
+ G*BOyOO*G
+********b**
+*O*OO*OO*O*
+***********
+*OgOO*OY*O*
+*****g*****
+ O*OO*OO*R
+ *********
+ */
+
 })(window, document);

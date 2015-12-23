@@ -35,7 +35,7 @@ function CarHelper(car) {
         },
         alreadyPassed: function(x, y) {
             //FIXME : check for all the cars
-            return car.way().indexOf(x + "," + y) != -1;  
+            return car.way().lastIndexOf(x + "," + y) !== -1;
         },
         direction: function(){
             var where = []
@@ -45,41 +45,43 @@ function CarHelper(car) {
 
             // LEFT
             var test = this.left(x, y);
-            if(test){
+            if(test && !this.alreadyPassed(test.x, test.y)){
                 where.push(test);
             }
 
             // RIGHT
             test = this.right(x, y);
-            if(test){
+            if(test && !this.alreadyPassed(test.x, test.y)){
                 where.push(test);
             }
 
             // UP
             test = this.up(x, y);
-            if(test){
+            if(test && !this.alreadyPassed(test.x, test.y)){
                 where.push(test);
             }
 
             // DOWN
             test = this.down(x, y);
-            if(test) {
+            if(test && !this.alreadyPassed(test.x, test.y)) {
                 where.push(test);
             }
-
             return where[this.random(0, where.length)] || undefined;
         },
         moveTo: function(x, y){
             var element = this.getElement(x, y)
                 ,pos = car.position();
 
-            car.path(x +','+ y, element.innerHTML);
-            car.way(pos);
+            var paths = car.path(x +','+ y, element.innerHTML);
+
+            if(this.getElement(pos.x, pos.y).textContent === element.textContent){
+                element.innerHTML = paths[x +','+ y];
+            }else{
+                element.innerHTML = 'w'.fontcolor(car.color());
+            }
+
+            car.way(x + ',' + y);
             car.position(x, y);
-
-
-
-            element.innerHTML = 'w'.fontcolor(car.color());
             return true;
         },
         move : function(){
