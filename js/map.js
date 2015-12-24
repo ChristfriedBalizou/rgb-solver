@@ -75,6 +75,7 @@ function Map(str){
             var tr = _this.table.children[p.y];
             var td = tr.children[p.x];
             td.innerHTML = 'w'.fontcolor(car.color());
+            car.path(x + ',' + y, td.innerHTML);
         }
 
     }
