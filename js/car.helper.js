@@ -16,7 +16,7 @@ function CarHelper(car) {
         },
         up: function (x, y) {
             x -= 1;
-            return x > 0 ? this.gravity(x, y) : undefined;
+            return x >= 0 ? this.gravity(x, y) : undefined;
         },
         down: function (x, y) {
             x += 1;
@@ -24,7 +24,7 @@ function CarHelper(car) {
         },
         left: function (x, y) {
             y -= 1;
-            return y > 0 ? this.gravity(x, y) : undefined;
+            return y >= 0 ? this.gravity(x, y) : undefined;
         },
         right: function (x, y) {
             y += 1;
