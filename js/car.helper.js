@@ -14,11 +14,11 @@ function CarHelper(car) {
         gravity: function(x, y){
             return this.canMove(x, y) ? {x: x, y: y} : undefined;
         },
-        right: function (x, y) {
+        left: function (x, y) {
             x -= 1;
             return x > 0 ? this.gravity(x, y) : undefined;
         },
-        left: function (x, y) {
+        right: function (x, y) {
             x += 1;
             return car.mapData.N > x ? this.gravity(x, y) : undefined;
         },
