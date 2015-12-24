@@ -20,7 +20,7 @@ function Car(c, q, x, y){
     };
 
     this.position = function (x, y) {
-        if(x && y)
+        if(!isNaN(x + y))
             position = {x: x, y: y};
       return position;
     };
