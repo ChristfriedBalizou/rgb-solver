@@ -10,7 +10,7 @@ function Car(c, q, x, y){
         ,store = []
         ,position = {x: x || 0 , y: y || 0}
         ,path = {}
-        ,way = [];
+        ,way = [x + ',' + y];
 
 
     this.setAttribute = function(key, value){
