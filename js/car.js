@@ -25,10 +25,6 @@ function Car(c, q, x, y){
       return position;
     };
 
-    this.store = function(){
-        return store;
-    };
-
     this.quota = function(){
         return quota;
     };
