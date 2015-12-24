@@ -5,6 +5,7 @@ function CarHelper(car) {
     }
 
     var backtrack = [];
+    
     car.helper = {
         getElement: function (x, y) {
             return car.table.children[y].children[x];
@@ -43,6 +44,7 @@ function CarHelper(car) {
                 ,pos = car.position()
                 ,x  = pos.x
                 ,y  = pos.y;
+            
             if (backtrack.length === car.way().length){
 	    	where = backtrack.pop();
 	    } else {		
@@ -71,7 +73,6 @@ function CarHelper(car) {
                 }
 	    }
 
-	    
 	    if (where.length){
 		var direction = where.splice(this.random(0, where.length), 1);
 	    	backtrack.push(where);
@@ -87,32 +88,44 @@ function CarHelper(car) {
             element.innerHTML = 'w'.fontcolor(car.color());
             car.way(x + ',' + y);
             this.update();
+            
 	    return true;
         },
-	backTo: function(x, y){ // x , y 
-            var element = this.getElement(x, y);
-            var paths = car.path();
+	backTo: function(x, y){ 
+            var element = this.getElement(x, y)
+                ,paths = car.path();
+                
             element.innerHTML = paths[x +','+ y];
             this.update();
-	    return;
+            
+	    return true;
+	},
+	toCoord: function(str){
+	    var coord = str.split(',')
+	       ,y = Number(coord.pop())
+	       ,x = Number(coord.pop());
+	       
+	    return {x: x, y: y};
 	},
 	update: function(){
-	    var s = car.way().slice(-1)[0].split(',');
-	    car.position(Number(s[0]), Number(s[1])); 
+	    var coord = this.toCoord(car.way().slice(-1).pop());
+	    car.position(coord.x, coord.y); 
 	},
-        move : function(){
+        move: function(){
             var coord = this.direction();
+            
             if(coord){
                 return this.moveTo(coord.x, coord.y);
-            } else {
-		var s = car.way().pop().split(',');
-	        if (car.way().length === 0) 
-                    return false;
-	    	this.backTo(s[0], s[1]); 
-	    } 
-	    return true;
+            } 
+    	    
+    	    var ways = car.way();
+            if (ways.length){
+                var coord = this.toCoord(ways.pop());
+                return this.backTo(coord.x, coord.y); 
+            }
+            return false;
         }
     };
-
+    
     return car;
 }
