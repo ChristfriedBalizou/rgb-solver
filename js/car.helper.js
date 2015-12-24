@@ -4,6 +4,7 @@ function CarHelper(car) {
         return new CarHelper(car);
     }
 
+    var backtrack = [];
     car.helper = {
         getElement: function (x, y) {
             return car.table.children[y].children[x];
@@ -42,54 +43,74 @@ function CarHelper(car) {
                 ,pos = car.position()
                 ,x  = pos.x
                 ,y  = pos.y;
+            if (backtrack.length === car.way().length){
+	    	where = backtrack.pop();
+	    } else {		
+	        // LEFT
+                var test = this.left(x, y);
+                if(test && !this.alreadyPassed(test.x, test.y)){
+                    where.push(test);
+                }
 
-            // LEFT
-            var test = this.left(x, y);
-            if(test && !this.alreadyPassed(test.x, test.y)){
-                where.push(test);
-            }
+                // RIGHT
+                test = this.right(x, y);
+                if(test && !this.alreadyPassed(test.x, test.y)){
+                    where.push(test);
+                }
 
-            // RIGHT
-            test = this.right(x, y);
-            if(test && !this.alreadyPassed(test.x, test.y)){
-                where.push(test);
-            }
+                // UP
+                test = this.up(x, y);
+                if(test && !this.alreadyPassed(test.x, test.y)){
+                    where.push(test);
+                }
 
-            // UP
-            test = this.up(x, y);
-            if(test && !this.alreadyPassed(test.x, test.y)){
-                where.push(test);
-            }
+                // DOWN
+                test = this.down(x, y);
+                if(test && !this.alreadyPassed(test.x, test.y)) {
+                    where.push(test);
+                }
+	    }
 
-            // DOWN
-            test = this.down(x, y);
-            if(test && !this.alreadyPassed(test.x, test.y)) {
-                where.push(test);
-            }
-            return where[this.random(0, where.length)] || undefined;
+	    
+	    if (where.length){
+		var direction = where.splice(this.random(0, where.length), 1);
+	    	backtrack.push(where);
+		return direction.pop();
+	    }
+	    return undefined;
         },
         moveTo: function(x, y){
             var element = this.getElement(x, y)
                 ,pos = car.position();
 
-            var paths = car.path(x +','+ y, element.innerHTML);
-
-            if(this.getElement(pos.x, pos.y).textContent === element.textContent){
-                element.innerHTML = paths[x +','+ y];
-            }else{
-                element.innerHTML = 'w'.fontcolor(car.color());
-            }
-
+            car.path(x +','+ y, element.innerHTML);
+            element.innerHTML = 'w'.fontcolor(car.color());
             car.way(x + ',' + y);
-            car.position(x, y);
-            return true;
+            this.update();
+	    return true;
         },
+	backTo: function(x, y){ // x , y 
+            var element = this.getElement(x, y);
+            var paths = car.path();
+            element.innerHTML = paths[x +','+ y];
+            this.update();
+	    return;
+	},
+	update: function(){
+	    var s = car.way().slice(-1)[0].split(',');
+	    car.position(Number(s[0]), Number(s[1])); 
+	},
         move : function(){
             var coord = this.direction();
             if(coord){
                 return this.moveTo(coord.x, coord.y);
-            }
-            return false;
+            } else {
+		var s = car.way().pop().split(',');
+	        if (car.way().length === 0) 
+                    return false;
+	    	this.backTo(s[0], s[1]); 
+	    } 
+	    return true;
         }
     };
 
