@@ -105,8 +105,9 @@ function CarHelper(car) {
 	backTo: function(x, y){ 
             var element = this.getElement(x, y)
                 ,paths = car.path();
-                
-            element.innerHTML = paths[x +','+ y];
+            if (car.way().lastIndexOf(x + "," + y) === -1){   
+				element.innerHTML = paths[x +','+ y];
+			}
             this.update();
             
 	    return true;
