@@ -35,9 +35,20 @@ function CarHelper(car) {
         random: function(min, max){
             return Math.floor(Math.random() * (max - min)) + min;
         },
-        alreadyPassed: function(x, y) {
+        alreadyPassed: function(pos, test) {
             //FIXME : check for all the cars
-            return car.way().lastIndexOf(x + "," + y) !== -1;
+			var ways = car.way();
+			for (var i=0; i < ways.length; i++){
+				if(ways[i] === pos.x + "," + pos.y){
+					if (i > 0 && ways[i-1] ===  test.x + "," + test.y)
+						return true;
+					
+					if (i+1 < ways.length && (ways[i+1] ===  test.x + "," + test.y))
+						return true;
+					
+				}
+			}
+            return false;
         },
         direction: function(){
             var where = []
@@ -50,25 +61,25 @@ function CarHelper(car) {
 	    } else {		
 	        // LEFT
                 var test = this.left(x, y);
-                if(test && !this.alreadyPassed(test.x, test.y)){
+                if(test && !this.alreadyPassed(pos, test)){
                     where.push(test);
                 }
 
                 // RIGHT
                 test = this.right(x, y);
-                if(test && !this.alreadyPassed(test.x, test.y)){
+                if(test && !this.alreadyPassed(pos, test)){
                     where.push(test);
                 }
 
                 // UP
                 test = this.up(x, y);
-                if(test && !this.alreadyPassed(test.x, test.y)){
+                if(test && !this.alreadyPassed(pos, test)){
                     where.push(test);
                 }
 
                 // DOWN
                 test = this.down(x, y);
-                if(test && !this.alreadyPassed(test.x, test.y)) {
+                if(test && !this.alreadyPassed(pos, test)){
                     where.push(test);
                 }
 	    }
